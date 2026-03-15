@@ -1,0 +1,81 @@
+<img
+  class="max-w-sm mx-auto block"
+  alt="Track Your Order"
+  src="https://cdn.shopify.com/s/files/1/0602/5596/1330/files/Rastrea_tu_pedido.png"
+/>
+<div class="text-center">
+  <input
+    type="text"
+    id="YQNum"
+    maxlength="50"
+    placeholder="e.g. 4PX3001861580851CN"
+    class="max-w-md px-4 py-3 text-base border border-gray-300 rounded-xl outline-none"
+  />
+
+  <br /><br />
+
+  <input
+    type="button"
+    id="YQBtn"
+    value="📦 Track Order"
+    class="bg-black text-white border-none px-7 py-3 text-base rounded-xl cursor-pointer transition-colors"
+  />
+
+  <p class="text-sm text-gray-500 mt-6 leading-relaxed">
+    The tracking number may take up to <strong>1 day</strong> to activate.<br />
+    Need help? Click here to
+    <a href="/pages/contact-us" class="text-blue-600 no-underline"
+      ><strong>contact us</strong></a
+    >
+  </p>
+</div>
+
+<!-- Container where tracking result will appear -->
+<div id="YQContainer" class="mt-10"></div>
+
+<!-- Tracking script -->
+<script>
+  (function () {
+    "use strict";
+
+    var scriptReady = false;
+    var s = document.createElement("script");
+    s.src = "https://www.17track.net/externalcall.js";
+    s.onload = function () { scriptReady = true; };
+    document.head.appendChild(s);
+
+    function doTrack() {
+      var input = document.getElementById("YQNum");
+      var num = (input.value || "").replace(/\s/g, "");
+
+      if (!num) {
+        alert("Please enter your tracking number.");
+        input.focus();
+        return;
+      }
+
+      if (!scriptReady || typeof window.YQV5 === "undefined") {
+        alert("Tracking service is loading. Please try again in a moment.");
+        return;
+      }
+
+      window.YQV5.trackSingle({
+        YQ_ContainerId: "YQContainer",
+        YQ_Height: 560,
+        YQ_Fc: "0",
+        YQ_Lang: "en",
+        YQ_Num: num
+      });
+    }
+
+    var btn = document.getElementById("YQBtn");
+    if (btn) { btn.addEventListener("click", doTrack); }
+
+    var input = document.getElementById("YQNum");
+    if (input) {
+      input.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.keyCode === 13) { doTrack(); }
+      });
+    }
+  })();
+</script>
